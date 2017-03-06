@@ -51,8 +51,6 @@ body { font-family:arial, helvetica, sans-serif; font-weight:normal; font-size:1
 </head>
 <body>
 <script type="text/javascript">
-// $.get('http://data.sparkfun.com/output/AJ5j4m38yDF1d4a48Qa2.csv?limit=15', function(data) {
- //$.get('http://data.sparkfun.com/output/4Jp17bR2qbsKVgw2LMMK.json?limit=15', function(data) {
  var k1,k2;
  function authStart(){
     pass=document.getElementById('passtext').value;
@@ -68,7 +66,7 @@ body { font-family:arial, helvetica, sans-serif; font-weight:normal; font-size:1
  }
  function getNShowAllMsgs(){   
     alert(k1+"--"+k2)
-    $.get('http://data.sparkfun.com/output/'+k1+'.csv?limit=3', function(data) {
+    $.get('https://data.sparkfun.com/output/'+k1+'.csv?limit=3', function(data) {
     document.getElementById('authDiv').style.visibility='hidden';
     row=0;
     alert(JSON.stringify(data))
@@ -115,7 +113,7 @@ function postDataFn(fn)
             data=btoa('{"Type":"Cmd","Name":"ChkTmp","time": "'+getFormattedDate()+'"}');
     }
     alert( data);
-    $.post("http://data.sparkfun.com/input/"+k1+"?private_key="+k2+"&1="+data+"&2=2&3=3&4=4&5=5", function(data, status){
+    $.post("https://data.sparkfun.com/input/"+k1+"?private_key="+k2+"&1="+data+"&2=2&3=3&4=4&5=5", function(data, status){
         alert("Data: " + data + "\nStatus: " + status);
     });
 }

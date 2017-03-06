@@ -1,1 +1,155 @@
-<h1> Test HTML </h1>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>CSV Parser</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js" type="text/javascript">
+</script>
+<style type="text/css">
+body { font-family:arial, helvetica, sans-serif; font-weight:normal; font-size:13px; color:#000; text-align:left; margin:3px 0px; }
+#updates { width:500px; height:500px; margin:20px;  }
+.PopupPanel
+{
+    border: solid 2px red;
+    text-align: center;
+    position: fixed;
+    left: 10%;
+    top: 35%;
+    background-color: white;
+    z-index: 100;
+    height: 30%;
+    width: 80%;  
+}
+.fnbuttonsTable
+{
+    border: solid 2px red;
+    text-align: center;
+    background-color: PaleTurquoise;
+    z-index: 100;
+    width: 90%;  
+    height: 70%;
+}
+.fnbutton
+{
+    text-align: center;
+    background-color: OliveDrab;
+    z-index: 100;
+    width: 80%;  
+    height: 30px;
+    color: white;
+}
+.updatesTable
+{
+    border: dotted 1px olive;
+    text-align: center;
+    background-color: PaleTurquoise;
+    z-index: 100;
+    width: 90%;  
+    height: 70%;
+}
+</style>
+</head>
+<body>
+<script type="text/javascript">
+// $.get('http://data.sparkfun.com/output/AJ5j4m38yDF1d4a48Qa2.csv?limit=15', function(data) {
+ //$.get('http://data.sparkfun.com/output/4Jp17bR2qbsKVgw2LMMK.json?limit=15', function(data) {
+ var k1,k2;
+ function authStart(){
+    pass=document.getElementById('passtext').value;
+    ind1=pass.split(",")[0];
+    ind2=pass.split(",")[1];
+    alert(ind1);
+    alert(ind2);
+    $.get('https://ajannair.github.io/encr.txt', function(data) {
+        k1=data.substring(parseInt(ind1),parseInt(ind1)+20);
+        k2=data.substring(parseInt(ind2),parseInt(ind2)+20);
+        getNShowAllMsgs();
+    });
+ }
+ function getNShowAllMsgs(){   
+    alert(k1+"--"+k2)
+    $.get('http://data.sparkfun.com/output/'+k1+'.csv?limit=3', function(data) {
+    document.getElementById('authDiv').style.visibility='hidden';
+    row=0;
+    alert(JSON.stringify(data))
+    var rows = data.split("\n");
+    rows.forEach( function getvalues(thisRow) {
+        row++;
+        var columns = thisRow.split(",");
+        trbld="<tr>"
+        hastd=0;
+        col="";
+        for(var i=0;i<columns.length;i++){ 
+            if (row>1){//ignore the first row which is column headers.
+                if(i==0) col=atob(columns[i]); else col=columns[i];
+                if(col.length>1) trbld += '<td class="updatesTable">' + col + "</td>\n"; 
+            }
+        }
+        trbld+="</tr>"
+        if (col!="") $('#updatesTable').append(trbld);
+    })
+   })
+    .fail(function() {
+    alert( "Error" );
+  });
+ }  
+
+function getFormattedDate() {
+    var date = new Date();
+    return date.toUTCString();
+}
+function postDataFn(fn)
+{
+    data=""
+    if ( fn=='lightON' )
+    {
+	       data=btoa('{"Type":"Cmd","Name":"LightOn","time": "'+getFormattedDate()+'"}');
+    }else if( fn=='FeedFish' )
+    {
+	       data=btoa('{"Type":"Cmd","Name":"FeedFish","time": "'+getFormattedDate()+'"}');
+    }else if( fn=='filterOn' )
+    {    
+            data=btoa('{"Type":"Cmd","Name":"FilterOn","time": "'+getFormattedDate()+'"}');
+    }else if( fn=='ChkTmp' )
+    {    
+            data=btoa('{"Type":"Cmd","Name":"ChkTmp","time": "'+getFormattedDate()+'"}');
+    }
+    alert( data);
+    $.post("http://data.sparkfun.com/input/"+k1+"?private_key="+k2+"&1="+data+"&2=2&3=3&4=4&5=5", function(data, status){
+        alert("Data: " + data + "\nStatus: " + status);
+    });
+}
+</script>
+    <div class="PopupPanel" id="authDiv">
+        Password:<br>
+        <input  id="passtext" type="text" style="width: 60%;     width: 80%; left: 10%;top: 35%; "    >
+        <br>
+        <br>
+        <button type=button style="width: 50%; text-align=center; height: 15%" onclick="authStart()" >Submit</button>
+    </div>
+<div id="btnsTble">
+<table border="1" cellpadding="1" cellspacing="0" width="100%">
+    <tr><td class="fnbuttonsTable" >
+    <button   class="fnbutton" onclick="postDataFn('lightON')">Light ON</button>
+    </td></tr>
+    <tr><td class="fnbuttonsTable" >
+    <button class="fnbutton" onclick="postDataFn('FeedFish')">Feed Fish</button>
+    </td></tr>
+    <tr><td class="fnbuttonsTable" >
+    <button class="fnbutton" onclick="postDataFn('FilterOn')">Filter ON</button>
+    </td></tr>
+    <tr><td class="fnbuttonsTable" >
+    <button class="fnbutton" onclick="postDataFn('ChkTmp')">Check Temperature</button>
+     </td></tr>
+</table>
+<br>
+<br>
+    <div id="pp">
+    <table id="updatesTable" border="1" cellpadding="2" cellspacing="0" width="100%" style="border-style:dotted;">
+    <tr><td  >UPDATES:
+    </td></tr>
+    </table>
+    </div>
+</div>
+</body>
+</html>

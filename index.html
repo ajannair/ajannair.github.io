@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-<title>CSV Parser</title>
+<title>Aj Home</title>
 	
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/lib/w3.css">
@@ -122,6 +122,12 @@ function postDataFn(fn)
         alert("Data: " + data + "\nStatus: " + status);
     });
 }
+function w3_open() {
+    document.getElementById("mySidenav").style.display = "block";
+}
+function w3_close() {
+    document.getElementById("mySidenav").style.display = "none";
+}
 </script>
     <div class="PopupPanel" id="authDiv">
         Password:<br>
@@ -131,9 +137,30 @@ function postDataFn(fn)
         <button type=button style="width: 50%; text-align=center; height: 15%" onclick="authStart()" >Submit</button>
     </div>
 	
-<header class="w3-container w3-teal">
-  <h1>Aj Home</h1>
+
+<header class="w3-container w3-card-4 w3-theme w3-top">
+  <h1>
+  <i class="w3-opennav fa fa-bars" onclick="w3_open()"></i>
+  AjHome 2014
+  </h1>
 </header>
+
+	
+<nav class="w3-sidenav w3-card-2 w3-white w3-top" style="width:30%;display:none;z-index:2" id="mySidenav">
+<div class="w3-container w3-theme-d2">
+  <span onclick="w3_close()" class="w3-closenav w3-right w3-xlarge">x</span>
+  <br>
+  <div class="w3-padding w3-center">
+    <img class="w3-circle" src="img_avatar.jpg" alt="avatar" style="width:75%">
+  </div>
+</div>
+<br>
+<a href="#">Movies</a>
+<a href="#">Friends</a>
+<a href="#">Messages</a>
+</nav>
+	
+	
 <div id="btnsTble">
 	
 <!--	
@@ -175,5 +202,10 @@ function postDataFn(fn)
     </table>
     </div>
 </div>
+
+
+<footer class="w3-container w3-theme w3-bottom">
+  <h3>AjHome</h3>
+</footer>
 </body>
 </html>
